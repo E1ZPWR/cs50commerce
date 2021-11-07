@@ -1,0 +1,28 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: content-box;
+}
+.img-position {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.index-btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.watchlist_right {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+}
+.cat_selection{
+    display:flex;
+    justify-content: space-around;
+}
+
+

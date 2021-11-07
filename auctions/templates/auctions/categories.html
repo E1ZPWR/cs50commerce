@@ -1,0 +1,80 @@
+{% extends "auctions/layout.html" %} {% block body %}
+
+<div class="container">
+    <div class="card mb-3" style="max-width: 100%; max-height: 100%">
+        <div class="row g-0">
+            <div class="col-md-12">
+                <div>
+                    <nav aria-label="breadcrumb">
+                        <form action="{% url 'categories' %}" method="post">
+                            {% csrf_token %}
+                            <div class="d-flex flex-row justify-content-center">
+                                <select class="form-control" name="categories">
+                                    {% for category in categories %}
+                                    <option value="{{ category.id }}">
+                                        {{ category }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                <input
+                                    type="submit"
+                                    class="btn btn-success"
+                                    style="display: inline-block"
+                                />
+                            </div>
+                        </form>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h2 class="text-center">All Listings in {{category}}</h2>
+    <hr />
+    <div class="row text-center mt-2">
+        {% for listing in listing %}
+        <div class="col-md-4 pb-1 pb-md-0">
+            <div class="card">
+                <img
+                    class="card-img-top"
+                    src="{{listing.image_url}}"
+                    alt="Card image cap"
+                />
+                <div class="card-body">
+                    <h5 class="card-title">
+                        {% if user.is_authenticated %}
+                        <a
+                            href="{% url 'listing' listing.id %}"
+                            class="badge badge-dark"
+                            >{{ listing.title }}</a
+                        >
+                        {% else %}
+                        <a href="{% url 'login' %}" class="badge badge-dark"
+                            >{{ listing.title }}</a
+                        >
+                        {% endif %}
+                    </h5>
+
+                    <p class="card-text">{{ listing.description }}</p>
+                    <p class="card-text">
+                        <span><strong>$</strong></span> {{ listing.price }}
+                    </p>
+                    <p class="card-text">Listed By: {{listing.user}}</p>
+                    <p class="card-text">
+                        Catgory: <a href="">{{listing.category}}</a>
+                    </p>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            Last updated {{listing.create_date}}
+                        </small>
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endfor%}
+    </div>
+</div>
+
+{% endblock body%}

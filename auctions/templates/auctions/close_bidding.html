@@ -1,0 +1,64 @@
+{% extends "auctions/list_details.html" %} {% block body %} {% if is_winner %}
+<h5>Congratulations, you are the winner!</h5>
+{% else %}
+<h5>Bidding is closed</h5>
+{% endif %}
+<div class="container">
+    <div class="card mb-3" style="max-width: 100%; max-height: 100%">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <div class="img-position">
+                    <img
+                        src="{{listing.image_url}}"
+                        class="img-fluid rounded mx-auto"
+                        alt="picsum img"
+                        style="width: 100%; height: 100%"
+                    />
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{listing.title}}</h5>
+                    <p class="card-text">{{listing.description}}</p>
+                    <p>
+                        <small class="text-muted">
+                            Was Listed By : {{ listing.user }}
+                        </small>
+                    </p>
+                    <p>
+                        <small>Final bidding price: ${{ listing.price }}</small>
+                    </p>
+                    <p>
+                        <small class="text-muted">
+                            Catgory : {{ category }}
+                        </small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr />
+<div class="contaner">
+    <div class="card mb-3" style="max-width: 100%; max-height: 100%">
+        <div class="row g-0">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">All Comments</div>
+                    {% for comment in comments %}
+                    <div class="card-body">
+                        <h5 class="card-text">{{ comment.title }}</h5>
+                        <br />
+                        <p class="card-text">{{ comment }}</p>
+                        <p><small>Posted by : {{ comment.user }}</small></p>
+                    </div>
+                    <hr />
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

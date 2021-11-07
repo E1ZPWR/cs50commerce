@@ -1,0 +1,66 @@
+{% extends "auctions/layout.html" %} {% block body %}
+
+<h2 class="text-center">Active Listings</h2>
+<hr />
+<div class="container">
+    <div class="row text-center mt-2">
+        {% for item in all_listings%}
+        <div class="col-md-4 pb-1 pb-md-0">
+            <div class="card">
+                <img
+                    class="card-img-top"
+                    src="{{item.image_url}}"
+                    alt="Card image cap"
+                />
+                <div class="card-body">
+                    <h5 class="card-title">
+                        {% if user.is_authenticated %}
+                        <a
+                            href="{% url 'listing' item.id %}"
+                            class="badge badge-dark"
+                            >{{ item.title }}</a
+                        >
+                        {% else %}
+                        <a href="{% url 'login' %}" class="badge badge-dark"
+                            >{{ item.title }}</a
+                        >
+                        {% endif %}
+                    </h5>
+
+                    <p class="card-text">{{ item.description }}</p>
+                    <p class="card-text">
+                        <span><strong>$</strong></span> {{ item.price }}
+                    </p>
+                    <p class="card-text">Listed By: {{item.user}}</p>
+                    <p class="card-text">
+                        Catgory: <a href="">{{item.category}}</a>
+                    </p>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            Last updated {{item.create_date}}
+                        </small>
+                    </p>
+                    <div class="index-btn">
+                        <div>
+                            {% if user.is_authenticated %}
+                            <a
+                                href="{% url 'listing' item.id%}"
+                                class="btn btn-outline-dark"
+                                >Read More
+                            </a>
+                            {% else %}
+                            <a
+                                href="{% url 'login' %}"
+                                class="btn btn-outline-dark"
+                                >Read More
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor%}
+    </div>
+</div>
+{% endblock body %}

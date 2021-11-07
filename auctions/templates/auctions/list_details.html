@@ -1,0 +1,135 @@
+{% extends "auctions/layout.html" %} {% block body %}
+
+<div class="container">
+    <h2 class="text-center">Listings</h2>
+    <hr />
+    {% if user.is_authenticated %}
+    <div class="card mb-3" style="max-width: 100%; max-height: 100%">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <div class="img-position">
+                    <img
+                        src="{{listing.image_url}}"
+                        class="img-fluid rounded mx-auto"
+                        alt="picsum img"
+                        style="width: 100%; height: 100%"
+                    />
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{listing.title}}</h5>
+                    <p class="card-text">{{listing.description}}</p>
+
+                    <p class="card-text">
+                        <small class="text-muted">
+                            <a href="">Catgory: {{ category }}</a>
+                        </small>
+                    </p>
+                    <p>
+                        <small class="text-muted">
+                            <a href="">Posted By : {{ listing.user }}</a>
+                        </small>
+                    </p>
+
+                    {% if is_owner %}
+                    <p class="card-text">
+                        <a href="{% url 'close_bidding' listing.id %}"
+                            >Close bidding</a
+                        >
+                    </p>
+                    {% endif %} {% if watching %}
+                    <p class="card-text">
+                        <a href="{% url 'remove_watchlist' listing.id %}"
+                            >Remove from WatchList</a
+                        >
+                    </p>
+                    {% else%}
+                    <p class="card-text">
+                        <a href="{% url 'add_watchlist' listing.id %}"
+                            >Add To WatchList</a
+                        >
+                    </p>
+                    {% endif %}
+
+                    <form action="{% url 'bidding' listing.id %}" method="post">
+                        {% csrf_token %}
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input
+                                type="number"
+                                min="{{ listing.price }}"
+                                class="form-control"
+                                aria-label="Amount (to the nearest dollar)"
+                                step="20.00"
+                                name="bid"
+                                placeholder="{{ listing.price }}"
+                            />
+                            <span class="input-group-text">.00</span>
+                            <input
+                                type="submit"
+                                value="Bid"
+                                class="btn btn-success"
+                                style="
+                                    display: inline-block;
+                                    marign-left: auto;
+                                "
+                            />
+                        </div>
+                        <div></div>
+                    </form>
+
+                    {% comment %} Comment Form {% endcomment %}
+                    <form action="{% url 'listing' listing.id %}" method="post">
+                        {% csrf_token %}
+                        <h6>Add comment</h6>
+                        <textarea
+                            class="form-control"
+                            aria-label="With textarea"
+                            name="comment"
+                            style="
+                                width: 100%;
+                                vertical-align: top;
+                                height: 100%;
+                            "
+                        ></textarea>
+                        <input
+                            type="submit"
+                            class="btn btn-success"
+                            style="
+                                display: inline-block;
+                                margin-top: 10px;
+                                marign-left: auto;
+                            "
+                        />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="card mb-3" style="max-width: 100%; max-height: 100%">
+        <div class="row g-0">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">All Comments</div>
+                    {% for comment in comments %}
+                    <div class="card-body">
+                        <h5 class="card-text">{{ comment.title }}</h5>
+                        <br />
+                        <p class="card-text">{{ comment }}</p>
+                        <p><small>Posted by : {{ comment.user }}</small></p>
+                    </div>
+                    <hr />
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="{% url 'index'%}"
+        ><button class="btn btn-primary">All Listing</button></a
+    >
+</div>
+{% endif%} {% endblock body%}
